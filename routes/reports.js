@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const jwt_secret = require('../jwt_secret');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./db/text.sqlite');
 
@@ -17,6 +16,7 @@ router.post('/',
 
         jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
             if (err) {
+                console.log("Error: Could not verify session.")
                 res.status(400).json({
                     data: {
                         msg: "Error: Could not verify session."
@@ -36,8 +36,8 @@ router.post('/',
 
     function addReport(res, req) {
 
-        const kmom = req.kmom;
-        const texts = req.texts
+        const kmom = req.title;
+        const texts = req.text
 
         db.run("INSERT INTO reports (kmom, texts) VALUES (?, ?)",
         kmom,

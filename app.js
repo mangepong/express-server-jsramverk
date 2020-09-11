@@ -12,6 +12,12 @@ const reports = require('./routes/reports');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./db/texts.sqlite');
 
+
+app.use(cors());
+if (process.env.NODE_ENV !== 'test') {
+    // use morgan to log at command line
+    app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
+}
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -21,5 +27,6 @@ app.use('/register', register);
 app.use('/login', login);
 app.use('/reports', reports);
 
+
 // Start up server
-app.listen(port, () => console.log(`Example API listening on port ${port}!`));
+app.listen(port, () => console.log(`Backend API listening on port ${port}!`));

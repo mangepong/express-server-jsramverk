@@ -26,9 +26,7 @@ router.post('/', function(req, res, next) {
                     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h'});
                     console.log(email + " is logged in.")
                     res.status(201).json({
-                        data: {
-                            msg: "User logged in"
-                        }
+                        jwt_token: token    
                     });
                 } else {
                     res.status(400).json({
