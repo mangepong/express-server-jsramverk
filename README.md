@@ -1,5 +1,5 @@
 # express-server-jsramverk
 
-##Installation
+## Installation
 
 To install everything just run ```npm install``` and run ```npm start```.
