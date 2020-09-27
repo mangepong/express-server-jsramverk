@@ -9,8 +9,6 @@ const kmom = require('./routes/kmom');
 const register = require('./routes/register');
 const login = require('./routes/login');
 const reports = require('./routes/reports');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/texts.sqlite');
 
 
 app.use(cors());
@@ -29,4 +27,6 @@ app.use('/reports', reports);
 
 
 // Start up server
-app.listen(port, () => console.log(`Backend API listening on port ${port}!`));
+var server = app.listen(port, () => console.log(`Backend API listening on port ${port}!`));
+
+module.exports = server;

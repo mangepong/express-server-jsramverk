@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/text.sqlite');
+const db = require("../db/database.js");
+// const db = new sqlite3.Database('./db/text.sqlite');
 
-router.post('/', function(req, res, next) {
+router.post('/', function(req, res) {
     const jwt = require('jsonwebtoken');
 
     const email = req.body.email;
@@ -19,14 +19,13 @@ router.post('/', function(req, res, next) {
                 }
             });
         } else {
-
             bcrypt.compare(password, row.password, function(err, ans) {
                 if (ans) {
                     const payload = { email: email };
                     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h'});
-                    console.log(email + " is logged in.")
+
                     res.status(201).json({
-                        jwt_token: token    
+                        jwt_token: token
                     });
                 } else {
                     res.status(400).json({
@@ -38,8 +37,6 @@ router.post('/', function(req, res, next) {
             });
         }
     });
-
-
 });
 
 module.exports = router;
