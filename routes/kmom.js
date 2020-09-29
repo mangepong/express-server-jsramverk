@@ -23,7 +23,7 @@ function getReports() {
         }
     });
 
-    // setTimeout(getReports, 5000);
+    setTimeout(getReports, 5000);
 }
 
 getReports();
