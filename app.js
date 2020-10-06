@@ -19,13 +19,13 @@ const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chatlog";
 
 
 io.on('connection', function (socket) {
-    socket.on('message', (msg, nick) => {
+    socket.on('message', (msg, nick, time) => {
        socket.broadcast.emit('message-broadcast', msg, nick);
        var date = new Date();
        let options = {
                  hour: "2-digit", minute: "2-digit"
             };
-       var time = date.toLocaleTimeString("sv-SE", options);
+       // var time = date.toLocaleTimeString("sv-SE", options);
 
        async function saveLog(nick, msg, time) {
            const client = await mongo.connect(dsn);
