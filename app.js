@@ -25,7 +25,7 @@ io.on('connection', function (socket) {
        let options = {
                  hour: "2-digit", minute: "2-digit"
             };
-       var time = date.toLocaleTimeString();
+       var time = date.toLocaleTimeString("sv-SE", options);
 
        async function saveLog(nick, msg, time) {
            const client = await mongo.connect(dsn);
