@@ -16,14 +16,15 @@ const mongo = require("mongodb").MongoClient;
 const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chatlog";
 
 
-var date = new Date();
-let options = {
-          hour: "2-digit", minute: "2-digit"
-     };
+
 
 io.on('connection', function (socket) {
     socket.on('message', (msg, nick) => {
        socket.broadcast.emit('message-broadcast', msg, nick);
+       var date = new Date();
+       let options = {
+                 hour: "2-digit", minute: "2-digit"
+            };
        var time = date.toLocaleTimeString("swe-sv", options);
 
        async function saveLog(nick, msg, time) {
