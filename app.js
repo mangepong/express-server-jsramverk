@@ -24,8 +24,8 @@ let options = {
 io.on('connection', function (socket) {
     socket.on('message', (msg, nick) => {
        socket.broadcast.emit('message-broadcast', msg, nick);
-       var time = "<p id='time2'>" + date.toLocaleTimeString("swe-sv", options) + "</p>";
-       nick = "<p id='time2'>" + nick + "</p>";
+       var time = date.toLocaleTimeString("swe-sv", options);
+
        async function saveLog(nick, msg, time) {
            const client = await mongo.connect(dsn);
            const db = await client.db();
