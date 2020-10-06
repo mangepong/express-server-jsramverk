@@ -23,16 +23,19 @@ io.on('connection', function (socket) {
        socket.broadcast.emit('message-broadcast', msg, nick);
        // date.toLocaleTimeString("swe-sv", options);
 
-       const client = mongo.connect(dsn);
-       const db = client.db();
-       const col = db.collection("users");
-       const chatlog =
+       async function saveLog(nick, msg) {
+           const client = await mongo.connect(dsn);
+           const db = await client.db();
+           const col = await db.collection("users");
+           const chatlog =
            {
                user: nick,
                msg: msg
            };
 
-       col.insertOne(chatlog);
+           await col.insertOne(chatlog);
+       }
+       saveLog(nick, msg);
     });
 });
 
