@@ -16,26 +16,27 @@ const mongo = require("mongodb").MongoClient;
 const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chatlog";
 
 
-// var date = new Date();
+var date = new Date();
 
 io.on('connection', function (socket) {
     socket.on('message', (msg, nick) => {
        socket.broadcast.emit('message-broadcast', msg, nick);
-       // date.toLocaleTimeString("swe-sv", options);
-
-       async function saveLog(nick, msg) {
+       var time = "<p id='time2'>" + date.toLocaleTimeString("swe-sv", options) + "</p>";
+       nick = "<p id='time2'>" + nick + "</p>";
+       async function saveLog(nick, msg, time) {
            const client = await mongo.connect(dsn);
            const db = await client.db();
            const col = await db.collection("users");
            const chatlog =
            {
                user: nick,
-               msg: msg
+               msg: msg,
+               time: time
            };
 
            await col.insertOne(chatlog);
        }
-       saveLog(nick, msg);
+       saveLog(nick, msg, time);
     });
 });
 
