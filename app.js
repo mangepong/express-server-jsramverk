@@ -9,12 +9,30 @@ const kmom = require('./routes/kmom');
 const register = require('./routes/register');
 const login = require('./routes/login');
 const reports = require('./routes/reports');
+const log = require('./routes/log');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const mongo = require("mongodb").MongoClient;
+const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/chatlog";
+
+
+// var date = new Date();
 
 io.on('connection', function (socket) {
     socket.on('message', (msg, nick) => {
        socket.broadcast.emit('message-broadcast', msg, nick);
+       // date.toLocaleTimeString("swe-sv", options);
+
+       const client = mongo.connect(dsn);
+       const db = client.db();
+       const col = db.collection("users");
+       const chatlog =
+           {
+               user: nick,
+               msg: msg
+           };
+
+       col.insertOne(chatlog);
     });
 });
 
@@ -33,6 +51,7 @@ app.use('/reports/week', kmom);
 app.use('/register', register);
 app.use('/login', login);
 app.use('/reports', reports);
+app.use('/log', log);
 
 server.listen(port, () => console.log(`Backend API listening on port ${port}!`));
 // Start up server
